@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>LatenCy</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  background: black;
+  color: white;
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Fondo con ruido + parpadeo */
+body::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  animation: scan 0.15s infinite;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(10px); }
+}
+
+/* Glitch brutal */
+.glitch {
+  font-size: 3.5rem;
+  letter-spacing: 10px;
+  position: relative;
+  animation: shake 0.2s infinite;
+  text-shadow: 0 0 5px white, 0 0 20px white;
+}
+
+.glitch::before,
+.glitch::after {
+  content: "LATENCY";
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.8;
+}
+
+.glitch::before {
+  color: white;
+  transform: translate(-3px, 2px);
+  clip-path: inset(0 0 50% 0);
+  animation: glitch1 0.15s infinite;
+}
+
+.glitch::after {
+  color: white;
+  transform: translate(3px, -2px);
+  clip-path: inset(50% 0 0 0);
+  animation: glitch2 0.15s infinite;
+}
+
+@keyframes glitch1 {
+  0% { transform: translate(-3px,2px); }
+  50% { transform: translate(3px,-2px); }
+  100% { transform: translate(-3px,2px); }
+}
+
+@keyframes glitch2 {
+  0% { transform: translate(3px,-2px); }
+  50% { transform: translate(-3px,2px); }
+  100% { transform: translate(3px,-2px); }
+}
+
+@keyframes shake {
+  0% { transform: translate(0); }
+  25% { transform: translate(-2px,2px); }
+  50% { transform: translate(2px,-2px); }
+  75% { transform: translate(-2px,-2px); }
+  100% { transform: translate(2px,2px); }
+}
+
+/* Terminal */
+#terminal {
+  margin-top: 25px;
+  font-size: 1rem;
+  white-space: pre-line;
+  text-align: center;
+  opacity: 0.9;
+  text-shadow: 0 0 5px white;
+}
+
+/* Texto final */
+#final {
+  margin-top: 25px;
+  font-size: 2rem;
+  opacity: 0;
+  letter-spacing: 3px;
+  transition: 2s;
+  text-shadow: 0 0 10px white, 0 0 30px white;
+}
+
+/* Flash terror */
+.flash {
+  animation: flash 0.08s infinite;
+}
+
+@keyframes flash {
+  0% { opacity: 1; }
+  50% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+</style>
+</head>
+
+<body>
+
+<div class="glitch">LATENCY</div>
+
+<div id="terminal"></div>
+
+<div id="final">LatenCy.com</div>
+
+<script>
+const text = [
+"[SYSTEM] corruption detected...",
+"[WARNING] unknown presence inside kernel...",
+"[ERROR] firewall breached...",
+"[ACCESS] something is watching...",
+"[UNKNOWN] LATENCY entity active..."
+];
+
+let i = 0;
+let terminal = document.getElementById("terminal");
+
+function typeLine() {
+  if (i < text.length) {
+    terminal.innerHTML += text[i] + "\n";
+    i++;
+
+    // efecto de “shock”
+    if (i === 3) {
+      document.body.classList.add("flash");
+      setTimeout(() => document.body.classList.remove("flash"), 400);
+    }
+
+    setTimeout(typeLine, 900);
+  } else {
+    setTimeout(() => {
+      document.getElementById("final").style.opacity = 1;
+    }, 1200);
+  }
+}
+
+setTimeout(typeLine, 1200);
+</script>
+
+</body>
+</html>
